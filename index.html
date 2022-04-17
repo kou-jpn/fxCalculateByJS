@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FX損益</title>
+</head>
+<body>
+    <h1>FX損益計算表(1lot=10,000通貨)</h1>
+
+    <p>USDレート<input type="number"  id="usd_now"></p>
+    <input type="button" value="check" onclick="getPrice();">
+    <class="main1">
+    <ul>
+        <li>買(Ask)</li>
+        <li>数量<input type="number" step="0.1" id="lot0" value="0">lot　　約定価格<input type="number" id="price0" step="0.01"> 損益<span id="profit0" step="0"></span>円</li>
+        <li>数量<input type="number" step="0.1" id="lot1" value="0">lot　　約定価格<input type="number" id="price1" step="0.01"> 損益<span id="profit1" step="0"></span>円</li>
+        <li>数量<input type="number" step="0.1" id="lot2" value="0">lot　　約定価格<input type="number" id="price2" step="0.01"> 損益<span id="profit2" step="0"></span>円</li>
+        <li>数量<input type="number" step="0.1" id="lot3" value="0">lot　　約定価格<input type="number" id="price3" step="0.01"> 損益<span id="profit3" step="0"></span>円</li>
+        <li>数量<input type="number" step="0.1" id="lot4" value="0">lot　　約定価格<input type="number" id="price4" step="0.01"> 損益<span id="profit4" step="0"></span>円</li>
+        <li>合計<span id="ask_lot_total" step="0.1"></span>lot     合計損益<span id="ask_profit_total" step="0"></span>円   </li>
+    </ul>
+</class>
+
+<class="main2">
+<ul>
+    <li>売</li>
+    <li>数量<input type="number" step="0.1" id="lot5" value="0">lot　　約定価格<input type="number" id="price5" step="0.01"> 損益<span id="profit5" step="0"></span>円</li>
+    <li>数量<input type="number" step="0.1" id="lot6" value="0">lot　　約定価格<input type="number" id="price6" step="0.01"> 損益<span id="profit6" step="0"></span>円</li>
+    <li>数量<input type="number" step="0.1" id="lot7" value="0">lot　　約定価格<input type="number" id="price7" step="0.01"> 損益<span id="profit7" step="0"></span>円</li>
+    <li>数量<input type="number" step="0.1" id="lot8" value="0">lot　　約定価格<input type="number" id="price8" step="0.01"> 損益<span id="profit8" step="0"></span>円</li>
+    <li>数量<input type="number" step="0.1" id="lot9" value="0">lot　　約定価格<input type="number" id="price9" step="0.01"> 損益<span id="profit9" step="0"></span>円</li>
+    <li>合計<span id="bid_lot_total" step="0.1"></span>lot     合計損益<span id="bid_profit_total" step="0"></span>円   </li>
+</ul>
+</class>
+<class="main3">
+<ul>
+    <li>総合計<span id="lot_total" step="0.1"></span>lot  　　　   合計損益<span id="profit_total" step="0"></span>円 </li>
+</ul>  
+</class>
+
+    <script>
+        function getPrice(){
+            var usd_now=0;
+            var ask_lot_total=0;
+            var ask_profit_total=0;
+            var bid_lot_total=0;
+            var bid_profit_total=0;
+
+            var lot_total=0;
+            var profit_total=0;
+            
+            //売、買を分けず、同じ配列に入れました。
+            var array_lot=[];
+            var array_price=[];
+            var array_profit=[];
+
+            usd_now=document.getElementById("usd_now").value;
+
+            //買・売一緒に計算し、利益計算で分岐
+            for(var i=0; i<10; i++){
+           array_lot.push(parseFloat((document.getElementById("lot"+i).value)));
+           array_price.push(document.getElementById("price"+i).value);
+
+           array_lot[i]=array_lot[i];
+
+            if(i<5){
+           array_profit[i]=parseInt(array_lot[i]*(array_price[i]-usd_now)*10000);
+           ask_lot_total+=array_lot[i];
+           ask_profit_total+=array_profit[i];
+            }else{
+                array_profit[i]=parseInt(array_lot[i]*(usd_now-array_price[i])*10000);
+                bid_lot_total+=array_lot[i];
+                bid_profit_total+=array_profit[i];
+            }
+            lot_total+=array_lot[i];
+            profit_total+=array_profit[i];
+        
+           //計算結果の出力
+           document.getElementById("profit"+i).innerHTML=array_profit[i];
+           document.getElementById("ask_lot_total").innerHTML=ask_lot_total;
+           document.getElementById("ask_profit_total").innerHTML=ask_profit_total;
+           document.getElementById("bid_lot_total").innerHTML=bid_lot_total;
+           document.getElementById("bid_profit_total").innerHTML=bid_profit_total;
+           document.getElementById("lot_total").innerHTML=lot_total;
+           document.getElementById("profit_total").innerHTML=profit_total;
+        }
+        }
+
+    </script>
+</body>
+</html>
